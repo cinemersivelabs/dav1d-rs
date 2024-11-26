@@ -76,8 +76,25 @@ fn main() {
         return;
     }
 
-    system_deps::Config::new()
-        .add_build_internal("dav1d", build::build_from_src)
-        .probe()
-        .unwrap();
+    let target = env::var("TARGET").unwrap();
+
+    match target.as_str() {
+        prebuilt_target @ ("aarch64-apple-darwin") => {
+            println!(
+                "cargo:rustc-link-search=prebuilt_lib/{}/dav1d",
+                prebuilt_target
+            )
+        }
+        _ => {
+            println!(
+                "cargo::warning=No prebuild binary found for target {}. Using fallback",
+                target
+            );
+            env::set_var("SYSTEM_DEPS_BUILD_INTERNAL", "always");
+            system_deps::Config::new()
+                .add_build_internal("dav1d", build::build_from_src)
+                .probe()
+                .unwrap();
+        }
+    }
 }
