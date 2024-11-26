@@ -80,9 +80,14 @@ fn main() {
 
     match target.as_str() {
         prebuilt_target @ ("aarch64-apple-darwin" | "x86_64-unknown-linux-gnu") => {
+            let lib_search_path = env::current_dir()
+                .unwrap()
+                .join("prebult_lib")
+                .join(prebuilt_target);
+
             println!(
-                "cargo:rustc-link-search=prebuilt_lib/{}/dav1d",
-                prebuilt_target
+                "cargo:rustc-link-search={}/dav1d",
+                lib_search_path.display()
             )
         }
         _ => {
