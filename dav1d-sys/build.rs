@@ -79,7 +79,7 @@ fn main() {
     let target = env::var("TARGET").unwrap();
 
     match target.as_str() {
-        prebuilt_target @ ("aarch64-apple-darwin") => {
+        prebuilt_target @ ("aarch64-apple-darwin" | "x86_64-unknown-linux-gnu") => {
             println!(
                 "cargo:rustc-link-search=prebuilt_lib/{}/dav1d",
                 prebuilt_target
