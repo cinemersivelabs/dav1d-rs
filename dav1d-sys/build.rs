@@ -85,10 +85,8 @@ fn main() {
                 .join("prebult_lib")
                 .join(prebuilt_target);
 
-            println!(
-                "cargo:rustc-link-search={}/dav1d",
-                lib_search_path.display()
-            )
+            println!("cargo:rustc-link-search={}", lib_search_path.display());
+            println!("cargo:rustc-link-lib=dav1d");
         }
         _ => {
             println!(
